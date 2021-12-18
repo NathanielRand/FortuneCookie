@@ -77,7 +77,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Grab message content from guild.
 	content := m.Content
 
-	if strings.Contains(content, "!vthelp") {
+	if strings.Contains(content, "!fchelp") {
 		// Build help message
 		author := m.Author.Username
 
@@ -167,7 +167,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 	}
 
-	if strings.Contains(content, "!fcinvite") {
+	if strings.EqualFold(content, "!fcinvite") {
 		author := m.Author.Username
 
 		// // Build start vote message
