@@ -7,7 +7,7 @@ export PATH=$PATH:/usr/local/go/bin
 export GO111MODULE=off
 
 # Pull most recent updates from Github repo.
-git pull https://github.com/NathanielRand/FortuneCookies
+git pull https://github.com/NathanielRand/FortuneCookie
 
 # Build go program.
 go build
