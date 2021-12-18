@@ -13,7 +13,7 @@ git pull https://github.com/NathanielRand/FortuneCookie
 go build
 
 # Kill previously running background process.
-kill $(pgrep FortuneCookies)
+kill $(pgrep FortuneCookie)
 
 # Run and detach updated go program into a new process.
-nohup ./FortuneCookies &
+nohup ./FortuneCookie &
