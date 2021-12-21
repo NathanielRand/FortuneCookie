@@ -181,16 +181,30 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.EqualFold(content, "!fc") {
+		// Call fortune and five numbers funcs to generate values
 		fortune := getFortune()
+		fiveNumbers := getFiveNumbers()
+
+		// Convert map values into string to be used in message below.		
+		one := strconv.Itoa(fiveNumbers[1])
+		two := strconv.Itoa(fiveNumbers[2])
+		three := strconv.Itoa(fiveNumbers[3])
+		four := strconv.Itoa(fiveNumbers[4])
+		five := strconv.Itoa(fiveNumbers[5])
+		six := strconv.Itoa(getOneNumber())
 
 		// Grab author
 		author := m.Author.Username
 
 		// Build start vote message
-		message := "🥠 Yo " + author + "... " + fortune
+		messageFortune := "🥠 Yo " + author + "... " + fortune + "\n \n"
+
+		messageLuckyNumbers := "🍀 " + author + "'s Lucky Numbers: " + one + "-" + two + "-" + three + "-" + four + "-" + five + "-" + six
+
+		messageFull := messageFortune + messageLuckyNumbers
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSend(m.ChannelID, messageFull)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -222,4 +236,28 @@ func getFortune() string {
 	result := csvLines[randomIndex]
 
 	return result[0]
+}
+
+func getFiveNumbers() map[int]int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	max := 70
+
+	m := make(map[int]int)
+	m[1] = rand.Intn(max-min) + min
+	m[2] = rand.Intn(max-min) + min
+	m[3] = rand.Intn(max-min) + min
+	m[4] = rand.Intn(max-min) + min
+	m[5] = rand.Intn(max-min) + min
+
+	return m
+}
+
+func getOneNumber() int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	max := 25
+	result := rand.Intn(max-min) + min
+
+	return result
 }
