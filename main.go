@@ -120,7 +120,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := "Here ya go " + author + "..." + "\n" + "https://discordbots.dev/"
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -132,7 +132,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := "Thanks for thinking of me " + author + " 💖." + "\n" + "https://www.patreon.com/BotVoteTo"
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -143,7 +143,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := "FortuneCookie is currently running version " + version
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -162,7 +162,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := "FortuneCookie is currently on " + guildCountStr + " servers. Such wow!"
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -175,7 +175,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		message := "Wow! Such nice " + author + ". Thanks for spreading the 💖. Here is an invite link made just for you... \n \n" + "https://discord.com/api/oauth2/authorize?client_id=921252848036106270&permissions=274877995072&scope=bot"
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, message)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -206,7 +206,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		messageFull := messageGreet + messageFortune + messageLucky
 
 		// Send start vote message
-		_, err := s.ChannelMessageSend(m.ChannelID, messageFull)
+		_, err := s.ChannelMessageSendReply(m.ChannelID, messageFull, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
