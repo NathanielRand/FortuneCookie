@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"os/signal"
+	"reflect"
 	"strconv"
 	"strings"
 	"syscall"
@@ -16,7 +17,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const prefix string = "!fc"
+const prefix string = "?fc"
 const version string = "1.1.0"
 
 func goDotEnvVariable(key string) string {
@@ -28,6 +29,17 @@ func goDotEnvVariable(key string) string {
 
 	// Return value from key provided.
 	return os.Getenv(key)
+}
+
+func test(t interface{}) {
+	switch reflect.TypeOf(t).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(t)
+
+		for i := 0; i < s.Len(); i++ {
+			fmt.Println(s.Index(i))
+		}
+	}
 }
 
 func main() {
@@ -79,45 +91,86 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	content := m.Content
 
 	if strings.Contains(content, prefix+"help") {
-		// Build help message
+		// Grab author
 		author := m.Author.Username
 
-		// Title
-		commandHelpTitle := "Looks like you need a hand. Check out my goodies below... \n \n"
+		// commandHelpTitle := "Looks like you need a hand. Check out my goodies below... \n \n"
+		greeting := "Hi " + author + "! \n \n"
+		introduction := "FortuneCookie bot is here to help.\n"
 
-		// Notes
-		note1 := "- Bot will return a fortune based on unfathomable cosmic events. \n"
-		note2 := "- Commands are case-sensitive. They must be in lower-case :) \n"
-		note3 := "- Dev: Narsiq#5638. DM me for requests/questions/love. \n"
+		// // Notes
+		note1 := "This bot will return a fortune based on unfathomable cosmic events ✨ \n \n"
+		note2 := "❕ Commands are case-sensitive. Lower-case only :) \n \n"
+		note3 := "\n👨🏼‍💻 Dev: Narsiq#5638. DM me for requests/questions/sups\n \n"
 
-		// Commands
-		commandHelp := "❔  " + prefix + "help : Provides a list of my commands. \n"
-		commandFortune := "🦶🏽  " + prefix + "!fc : Return a fortune based on unfathomable cosmic events. \n"
-		commandInvite := "🔗  " + prefix + "invite : A invite link for the FortuneCookie Bot. \n"
-		commandSite := "🔗  " + prefix + "site : Link to the FortuneCookie website. \n"
-		commandSupport := "✨  " + prefix + "support : Link to the FortuneCookie Patreon. \n"
-		commandStats := "📊  " + prefix + "stats : Check out FortuneCookie stats. \n"
-		commandVersion := "🤖  " + prefix + "version : Current FortuneCookie version. \n"
+		commandPrefix := prefix
 
-		// Build sub messages
-		notesMessage := note1 + note2 + note3
-		commandsMessage := commandHelp + commandFortune
-		othersMessage := commandInvite + commandSite + commandSupport + commandStats + commandVersion
+		// // Commands
+		commandsHeader := "\nCOMMANDS:\n\n"
+		commandHelpMessage := "❔  " + commandPrefix + "help \n- Provides a list of my commands. \n\n"
+		commandFortune := "✨  " + commandPrefix + " \n- Returns a fortune based on unfathomable cosmic events. \n\n"
+		commandInvite := "🔗  " + commandPrefix + "invite \n- A invite link for the FortuneCookie Bot. \n\n"
+		commandSite := "🔗  " + commandPrefix + "site \n- Link to the FortuneCookie website. \n\n"
+		commandSupport := "💝  " + commandPrefix + "support \n- Link to the FortuneCookie Patreon. \n\n"
+		commandStats := "📊  " + commandPrefix + "stats \n- Check out FortuneCookie stats. \n\n"
+		commandVersion := "🤖  " + commandPrefix + "version \n- Current FortuneCookie version. \n\n"
 
-		// Build full message
-		message := "Whats up " + author + "\n \n" + commandHelpTitle + "NOTES: \n \n" + notesMessage + "\n" + "COMMANDS: \n \n" + commandsMessage + "\n" + "OTHER: \n \n" + othersMessage + "\n \n" + "https://www.patreon.com/BotVoteTo"
+		// // Build start vote message
+		// messageGreet := greeting + " " + author + "... \n"
+		// messageFortune := "```fix" + "\n" + "🥠 " + fortune + "\n" + "```"
+		// messageTitle := "🍀 " + author + "'s Lucky Numbers: "
 
-		// Reply to help request with build message above.
+		messageFull := greeting + introduction + note1 + note2 + commandsHeader + commandFortune + commandHelpMessage + commandInvite + commandSite + commandSupport + commandStats + commandVersion + note3
+
+		message := "```\n" + messageFull + "\n```"
+
+		// Send start vote message
 		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
 
+	// if strings.Contains(content, prefix+"help") {
+	// 	// Build help message
+	// 	author := m.Author.Username
+
+	// 	// Title
+	// 	commandHelpTitle := "Looks like you need a hand. Check out my goodies below... \n \n"
+
+	// 	// Notes
+	// 	note1 := "- Bot will return a fortune based on unfathomable cosmic events. \n"
+	// 	note2 := "- Commands are case-sensitive. They must be in lower-case :) \n"
+	// 	note3 := "- Dev: Narsiq#5638. DM me for requests/questions/love. \n"
+
+	// 	// Commands
+	// 	commandHelp := "❔  " + prefix + "help : Provides a list of my commands. \n"
+	// 	commandFortune := "🦶🏽  " + prefix + "?fc : Return a fortune based on unfathomable cosmic events. \n"
+	// 	commandInvite := "🔗  " + prefix + "invite : A invite link for the FortuneCookie Bot. \n"
+	// 	commandSite := "🔗  " + prefix + "site : Link to the FortuneCookie website. \n"
+	// 	commandSupport := "✨  " + prefix + "support : Link to the FortuneCookie Patreon. \n"
+	// 	commandStats := "📊  " + prefix + "stats : Check out FortuneCookie stats. \n"
+	// 	commandVersion := "🤖  " + prefix + "version : Current FortuneCookie version. \n"
+
+	// 	// Build sub messages
+	// 	notesMessage := note1 + note2 + note3
+	// 	commandsMessage := commandHelp + commandFortune
+	// 	othersMessage := commandInvite + commandSite + commandSupport + commandStats + commandVersion
+
+	// 	// Build full message
+	// 	message := "Whats up " + author + "\n \n" + commandHelpTitle + "NOTES: \n \n" + notesMessage + "\n" + "COMMANDS: \n \n" + commandsMessage + "\n" + "OTHER: \n \n" + othersMessage + "\n \n" + "https://www.patreon.com/BotVoteTo"
+
+	// 	// Reply to help request with build message above.
+	// 	_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// }
+
 	if strings.Contains(content, prefix+"site") {
 		// Build start vote message
 		author := m.Author.Username
-		message := "Here ya go " + author + "..." + "\n" + "https://discordbots.dev/"
+		message := "Here ya go " + author + "..." + "\n\n" + "https://discordbots.dev/"
 
 		// Send start vote message
 		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
@@ -129,7 +182,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.Contains(content, prefix+"support") {
 		// Build start vote message
 		author := m.Author.Username
-		message := "Thanks for thinking of me " + author + " 💖." + "\n" + "https://www.patreon.com/BotVoteTo"
+		message := "Thanks for thinking of me " + author + " 💖." + "\n\n" + "https://www.patreon.com/BotVoteTo"
 
 		// Send start vote message
 		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
@@ -152,14 +205,18 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.Contains(content, prefix+"stats") {
 		// TODO: This will need to be updated to iterate through
 		// all shards once the bot joins 1,000 servers.
+		// var guilds []string
 		guilds := s.State.Ready.Guilds
 		fmt.Println(len(guilds))
 		guildCount := len(guilds)
-
 		guildCountStr := strconv.Itoa(guildCount)
 
+		test(guilds)
+		fmt.Println(guilds)
+		fmt.Printf("t1: %T\n", guilds)
+
 		// // Build start vote message
-		message := "FortuneCookie is currently on " + guildCountStr + " servers. Such wow!"
+		message := "FortuneCookie bot is currently on " + guildCountStr + " servers! Noice..."
 
 		// Send start vote message
 		_, err := s.ChannelMessageSendReply(m.ChannelID, message, m.Reference())
@@ -260,7 +317,7 @@ func getFortune() string {
 	// Generate random number using min/max index of csv file lines.
 	rand.Seed(time.Now().UnixNano())
 	min := 0
-	max := 856
+	max := 842
 	randomIndex := rand.Intn(max-min+1) + min
 	result := csvLines[randomIndex]
 

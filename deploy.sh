@@ -17,3 +17,4 @@ kill $(pgrep FortuneCookie)
 
 # Run and detach updated go program into a new process.
 nohup ./FortuneCookie &
+
