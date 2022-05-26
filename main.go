@@ -17,7 +17,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const prefix string = "?fc"
+const prefix string = "!fc"
 const version string = "1.1.0"
 
 func goDotEnvVariable(key string) string {
@@ -107,18 +107,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		// // Commands
 		commandsHeader := "\nCOMMANDS:\n\n"
-		commandHelpMessage := "❔  " + commandPrefix + "help \n- Provides a list of my commands. \n\n"
-		commandFortune := "✨  " + commandPrefix + " \n- Returns a fortune based on unfathomable cosmic events. \n\n"
-		commandInvite := "🔗  " + commandPrefix + "invite \n- A invite link for the FortuneCookie Bot. \n\n"
-		commandSite := "🔗  " + commandPrefix + "site \n- Link to the FortuneCookie website. \n\n"
-		commandSupport := "💝  " + commandPrefix + "support \n- Link to the FortuneCookie Patreon. \n\n"
-		commandStats := "📊  " + commandPrefix + "stats \n- Check out FortuneCookie stats. \n\n"
-		commandVersion := "🤖  " + commandPrefix + "version \n- Current FortuneCookie version. \n\n"
-
-		// // Build start vote message
-		// messageGreet := greeting + " " + author + "... \n"
-		// messageFortune := "```fix" + "\n" + "🥠 " + fortune + "\n" + "```"
-		// messageTitle := "🍀 " + author + "'s Lucky Numbers: "
+		commandHelpMessage := "❔   " + commandPrefix + "help - Provides a list of my commands. \n\n"
+		commandFortune := "✨  " + commandPrefix + " - Returns a fortune based on unfathomable cosmic events. \n\n"
+		commandInvite := "🔗  " + commandPrefix + "invite - A invite link for the FortuneCookie Bot. \n\n"
+		commandSite := "🔗  " + commandPrefix + "site - Link to the FortuneCookie website. \n\n"
+		commandSupport := "💝  " + commandPrefix + "support - Link to the FortuneCookie Patreon. \n\n"
+		commandStats := "📊  " + commandPrefix + "stats - Check out FortuneCookie stats. \n\n"
+		commandVersion := "🤖  " + commandPrefix + "version - Current FortuneCookie version. \n\n"
 
 		messageFull := greeting + introduction + note1 + note2 + commandsHeader + commandFortune + commandHelpMessage + commandInvite + commandSite + commandSupport + commandStats + commandVersion + note3
 
